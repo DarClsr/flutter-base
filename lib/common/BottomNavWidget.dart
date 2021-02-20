@@ -7,45 +7,46 @@ import 'package:fluuter_layout/model/bottom-nav.model.dart';
 class BottomNavWidget extends StatefulWidget {
   int index;
   final callback;
-  BottomNavWidget(this.index,{this.callback});
+  int currentPage;
+  BottomNavWidget({Key key,this.index,this.callback,this.currentPage}):super(key: key);
   @override
-  State<StatefulWidget> createState() => _BottomNavWidgetState(this.index);
+  State<StatefulWidget> createState() => _BottomNavWidgetState();
 }
 
 
 class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProviderStateMixin{
-  int index;
-  _BottomNavWidgetState(this.index);
+
   List navs=BottomNavs;
-  int current=0;
   AnimationController _animationController;
   Animation<double> _moveAnimation;
   getButtons (){
+
+    if(widget.currentPage==widget.index){
+      _animationController.reset();
+      _animationController.forward();
+    }
     List<Widget> buttons=new List();
      for(int i=0;i<navs.length;i++){
-        final BottomNavModel item=navs[i];
-        var currentWidget=i==this.current?
-        activeButton(item.icon):
-        IconButton(icon: item.icon,
-            onPressed:(){
-          setCuurent(i,item.path);
+       final BottomNavModel item=navs[i];
+        var currentWidget=i==widget.currentPage?
+        activeButton(item.icon,i):
+        IconButton(icon: item.icon, onPressed:(){
+          setCurrent(i);
         });
         buttons.add(
            currentWidget
         );
      }
-     return buttons.toList();
+
+
+    return buttons.toList();
   }
-  setCuurent(int i,String path){
-    _animationController.reset();
-    this.setState(() {
-       this.current=i;
-       widget.callback(i);
-       // Navigator.pushNamed(context, path);
-    });
-    _animationController.forward();
+  setCurrent(int i){
+
+    widget.callback(i);
   }
-  activeButton(Icon icon){
+  activeButton(Icon icon,int i){
+
     return Container(
       child: ScaleTransition(
         scale:_moveAnimation,
@@ -66,7 +67,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
       child:Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: getButtons()
+        children:getButtons()
       ),
     );
   }
@@ -82,7 +83,6 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
       curve: Curves.fastOutSlowIn
     );
     _moveAnimation=Tween(begin: 0.8,end: 1.2).animate(curve);
-    current=index;
     super.initState();
   }
 }
