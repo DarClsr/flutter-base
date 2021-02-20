@@ -19,14 +19,14 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
   List navs=BottomNavs;
   AnimationController _animationController;
   Animation<double> _moveAnimation;
-  getButtons (){
 
+  getButtons (){
     if(widget.currentPage==widget.index){
       _animationController.reset();
       _animationController.forward();
     }
     List<Widget> buttons=new List();
-     for(int i=0;i<navs.length;i++){
+    for(int i=0;i<navs.length;i++){
        final BottomNavModel item=navs[i];
         var currentWidget=i==widget.currentPage?
         activeButton(item.icon,i):
@@ -37,28 +37,24 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
            currentWidget
         );
      }
+     return buttons.toList();
 
-
-    return buttons.toList();
   }
   setCurrent(int i){
-
     widget.callback(i);
   }
   activeButton(Icon icon,int i){
-
     return Container(
       child: ScaleTransition(
         scale:_moveAnimation,
-        child:Container(
+        child: Container(
           child:  CircleAvatar(
-            backgroundColor: Colors.blue,
-            child: icon
+              backgroundColor: Colors.blue,
+              child: icon
           ),
         )
       )
     );
-
   }
   @override
   Widget build(BuildContext context) {
@@ -67,7 +63,18 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
       child:Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children:getButtons()
+        children:navs.asMap().keys.map((value){
+           return Container(
+             width: 50,
+             child:Stack(
+                 children:[
+                   Positioned(
+                       child:getButtons()[value]
+                   )
+                 ]
+             ),
+           );
+        }).toList()
       ),
     );
   }
