@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluuter_layout/common/BottomNavWidget.dart';
+import 'package:fluuter_layout/common/TopBar.dart';
 import 'package:fluuter_layout/product/product-card.dart';
 import 'package:fluuter_layout/product/product-grid.dart';
 import 'package:fluuter_layout/styles/custom-text-style.dart';
@@ -27,12 +28,7 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Color(0xffEBEBEB),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("home"),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.transparent,
       body: ListView(
         shrinkWrap: true,
         children: [

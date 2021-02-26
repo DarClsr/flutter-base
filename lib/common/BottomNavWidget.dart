@@ -28,9 +28,10 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
     List<Widget> buttons=new List();
     for(int i=0;i<navs.length;i++){
        final BottomNavModel item=navs[i];
-        var currentWidget=i==widget.currentPage?
+
+       var currentWidget=i==widget.currentPage?
         activeButton(item.icon,i):
-        IconButton(icon: item.icon, onPressed:(){
+        IconButton(icon: Icon(item.icon) , onPressed:(){
           setCurrent(i);
         });
         buttons.add(
@@ -43,14 +44,16 @@ class _BottomNavWidgetState extends State<BottomNavWidget> with SingleTickerProv
   setCurrent(int i){
     widget.callback(i);
   }
-  activeButton(Icon icon,int i){
+
+  activeButton(IconData icon,int i){
     return Container(
       child: ScaleTransition(
         scale:_moveAnimation,
         child: Container(
+          color: Colors.transparent,
           child:  CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: icon
+              backgroundColor: Color(0xff57cb5e),
+              child: Icon(icon,color: Colors.white)
           ),
         )
       )
